@@ -20,6 +20,9 @@ pipeline {
     }
 
     stage('Run on BrowserStack') {
+     tools {
+        nodejs 'nodeJs25'  // Nome configurato in Jenkins → Manage Jenkins → Tools → NodeJS
+      }
       steps {
         // 🔹 Wrappa tutto con le credenziali BrowserStack
         browserstack(credentialsId: 'c047256b-195c-4fa3-acd2-c1d34c943a17') {
