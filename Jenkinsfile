@@ -18,7 +18,7 @@ pipeline {
 
     stage('Install Node') {
       tools {
-        nodejs 'node25'  // 🔹 Nome configurato in Jenkins → Manage Jenkins → Tools → NodeJS
+        nodejs 'nodeJs25'  // 🔹 Nome configurato in Jenkins → Manage Jenkins → Tools → NodeJS
       }
       steps {
         sh 'node -v'
