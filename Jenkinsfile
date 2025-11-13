@@ -27,7 +27,7 @@ pipeline {
         // 🔹 Wrappa tutto con le credenziali BrowserStack
         browserstack(credentialsId: 'c047256b-195c-4fa3-acd2-c1d34c943a17') {
           echo '🔐 Credenziali BrowserStack trovate, procedo con il test...'
-
+          
           dir('config') {
             echo '📥 Installazione dipendenze...'
             sh 'npm ci || npm install'
@@ -35,6 +35,8 @@ pipeline {
             echo '🚀 Avvio test WebdriverIO su BrowserStack...'
             sh 'npx wdio run ./wdio.conf.ts'
           }
+          
+        }
       }
     }
   }
@@ -50,5 +52,4 @@ pipeline {
       echo '✅ Tutti i test sono passati con successo!'
     }
   }
-}
 }
