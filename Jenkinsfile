@@ -9,7 +9,7 @@ pipeline {
       }
     }
 
-    stage('Install Node') {
+    stage('Check the installation') {
       tools {
         nodejs 'nodeJs25'  // Nome configurato in Jenkins → Manage Jenkins → Tools → NodeJS
       }
@@ -22,6 +22,7 @@ pipeline {
     stage('Run on BrowserStack') {
      tools {
         nodejs 'nodeJs25'  // Nome configurato in Jenkins → Manage Jenkins → Tools → NodeJS
+                         //Fondamentale che funzioni 
       }
       steps {
         // 🔹 Wrappa tutto con le credenziali BrowserStack
@@ -37,6 +38,7 @@ pipeline {
           }
           
         }
+        browserStackReportPublisher 'automate'
       }
     }
   }
