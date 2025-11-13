@@ -1,24 +1,17 @@
 pipeline {
   agent any
 
-  environment {
-    // Variabili di BrowserStack (recuperate da Jenkins credentials)
-    BROWSERSTACK_USERNAME = credentials('browserstack-username')
-    BROWSERSTACK_ACCESS_KEY = credentials('browserstack-access-key')
-  }
-
   stages {
-
     stage('Checkout') {
       steps {
-        echo 'Clonazione del repository...'
+        echo '📦 Clonazione del repository...'
         checkout scm
       }
     }
 
     stage('Install Node') {
       tools {
-        nodejs 'nodeJs25'  // 🔹 Nome configurato in Jenkins → Manage Jenkins → Tools → NodeJS
+        nodejs 'nodeJs25'  // Nome configurato in Jenkins → Manage Jenkins → Tools → NodeJS
       }
       steps {
         sh 'node -v'
@@ -26,20 +19,19 @@ pipeline {
       }
     }
 
-    stage('Install dependencies') {
+    stage('Run on BrowserStack') {
       steps {
-        dir('config') {
-          echo 'Installazione dipendenze...'
-          sh 'npm ci || npm install'
-        }
-      }
-    }
+        // 🔹 Wrappa tutto con le credenziali BrowserStack
+        browserstack(credentialsId: 'c047256b-195c-4fa3-acd2-c1d34c943a17') {
+          echo '🔐 Credenziali BrowserStack trovate, procedo con il test...'
 
-    stage('Run tests on BrowserStack') {
-      steps {
-        dir('config') {
-          echo 'Esecuzione test WebdriverIO su BrowserStack...'
-          sh 'npx wdio run ./wdio.conf.ts'
+          dir('config') {
+            echo '📥 Installazione dipendenze...'
+            sh 'npm ci || npm install'
+
+            echo '🚀 Avvio test WebdriverIO su BrowserStack...'
+            sh 'npx wdio run ./wdio.conf.ts'
+          }
         }
       }
     }
@@ -47,7 +39,7 @@ pipeline {
 
   post {
     always {
-      echo 'Pipeline terminata.'
+      echo '🏁 Pipeline terminata.'
     }
     failure {
       echo '❌ Build fallita.'
