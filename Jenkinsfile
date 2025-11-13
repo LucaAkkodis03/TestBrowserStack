@@ -29,12 +29,12 @@ pipeline {
         browserstack(credentialsId: 'c047256b-195c-4fa3-acd2-c1d34c943a17') {
           echo '🔐 Credenziali BrowserStack trovate, procedo con il test...'
           
-          dir('config') {
+          dir('config') { //Dobbiamo dire a jenkins di guarda dentro nella cartella config una volta caricato il file
             echo '📥 Installazione dipendenze...'
             sh 'npm ci || npm install'
 
             echo '🚀 Avvio test WebdriverIO su BrowserStack...'
-            sh 'npx wdio run ./wdio.conf.ts'
+            sh 'npm run wdio'
           }
           
         }
